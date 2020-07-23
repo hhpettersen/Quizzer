@@ -9,20 +9,21 @@ import com.example.quizzer.data.entities.Character
 import com.example.quizzer.data.repository.CharacterRepository
 import com.example.quizzer.utils.Resource
 
-class CharacterDetailViewModel @ViewModelInject constructor(
-    private val repository: CharacterRepository
-) : ViewModel() {
 
-    private val _id = MutableLiveData<Int>()
-
-    private val _character = _id.switchMap { id ->
-        repository.getCharacter(id)
-    }
-    val character: LiveData<Resource<Character>> = _character
-
-
-    fun start(id: Int) {
-        _id.value = id
-    }
-
-}
+//class CharacterDetailViewModel @ViewModelInject constructor(
+//    private val repository: CharacterRepository
+//) : ViewModel() {
+//
+//    private val _id = MutableLiveData<Int>()
+//
+//    private val _character = _id.switchMap { id ->
+//        repository.getCharacter(id)
+//    }
+//    val character: LiveData<Resource<Character>> = _character
+//
+//
+//    fun start(id: Int) {
+//        _id.value = id
+//    }
+//
+//}

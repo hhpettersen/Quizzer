@@ -19,47 +19,49 @@ import kotlinx.android.synthetic.main.characters_fragment.*
 import kotlinx.android.synthetic.main.characters_fragment.view.*
 
 @AndroidEntryPoint
-class CharactersFragment : Fragment(), CharactersAdapter.CharacterItemListener{
+class CharactersFragment : Fragment()/*, CharactersAdapter.CharacterItemListener*/{
 
     private val viewModel: CharactersViewModel by viewModels()
-    private lateinit var adapter: CharactersAdapter
+//    private lateinit var adapter: CharactersAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.characters_fragment, container, false)
-        setupRecyclerView(view)
+//        setupRecyclerView(view)
         setupObservers()
         return view
     }
 
-    private fun setupRecyclerView(view: View) {
-        adapter = CharactersAdapter(this)
-        view.characters_rv.layoutManager = LinearLayoutManager(activity)
-        view.characters_rv.adapter = adapter
-    }
 
+//    private fun setupRecyclerView(view: View) {
+//        adapter = CharactersAdapter(this)
+//        view.characters_rv.layoutManager = LinearLayoutManager(activity)
+//        view.characters_rv.adapter = adapter
+//    }
+//
     private fun setupObservers() {
         viewModel.characters.observe(viewLifecycleOwner, Observer {
-            when (it.status) {
-                Resource.Status.SUCCESS -> {
-                    progress_bar.visibility = View.GONE
-                    if (!it.data.isNullOrEmpty()) adapter.setItems(ArrayList(it.data))
-                }
-                Resource.Status.ERROR ->
-                    Toast.makeText(activity, it.message, Toast.LENGTH_SHORT).show()
-
-                Resource.Status.LOADING ->
-                    progress_bar.visibility = View.VISIBLE
-            }
+            println(it.data)
+//            when (it.status) {
+//                Resource.Status.SUCCESS -> {
+//                    progress_bar.visibility = View.GONE
+//                    if (!it.data.isNullOrEmpty()) adapter.setItems(ArrayList(it.data))
+//                }
+//                Resource.Status.ERROR ->
+//                    Toast.makeText(activity, it.message, Toast.LENGTH_SHORT).show()
+//
+//                Resource.Status.LOADING ->
+//                    progress_bar.visibility = View.VISIBLE
+//            }
         })
     }
-
-    override fun onClickedCharacter(characterId: Int) {
-        findNavController().navigate(
-            R.id.action_charactersFragment_to_characterDetailFragment,
-            bundleOf("id" to characterId)
-        )
-    }
+//
+//    override fun onClickedCharacter(characterId: Int) {
+//        findNavController().navigate(
+//            R.id.action_charactersFragment_to_characterDetailFragment,
+//            bundleOf("id" to characterId)
+//        )
+//    }
 }
