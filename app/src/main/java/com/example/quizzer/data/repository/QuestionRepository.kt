@@ -15,4 +15,6 @@ class QuestionRepository @Inject constructor(
         networkCall = { remoteDataSource.getQuestions() },
         saveCallResult = { localDataSource.insertAll(it.results)}
     )
+
+    fun deleteQuestions() = localDataSource.deleteQuestions()
 }

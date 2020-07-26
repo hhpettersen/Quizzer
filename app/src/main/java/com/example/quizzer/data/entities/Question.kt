@@ -8,7 +8,9 @@ data class Question(
     val category: String,
     val type: String,
     val difficulty: String,
-    @PrimaryKey
     val question: String,
     val correct_answer: Boolean
-)
+) {
+    @PrimaryKey(autoGenerate = true)
+    var questionId: Int = 0
+}

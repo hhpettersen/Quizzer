@@ -3,11 +3,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/charactersFragment">
+    app:startDestination="@id/startFragment">
 
     <fragment
-        android:id="@+id/charactersFragment"
-        android:name="com.example.quizzer.ui.characters.CharactersFragment"
-        android:label="Characters"
-        tools:layout="@layout/characters_fragment" />
+        android:id="@+id/questionsFragment"
+        android:name="com.example.quizzer.ui.Questions.QuestionsFragment"
+        android:label="questions_fragment"
+        tools:layout="@layout/questions_fragment" >
+        <action
+            android:id="@+id/action_questionsFragment_to_scoreFragment"
+            app:destination="@id/scoreFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/scoreFragment"
+        android:name="com.example.quizzer.ui.Score.ScoreFragment"
+        android:label="score_fragment"
+        tools:layout="@layout/score_fragment" >
+        <argument
+            android:name="score"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_scoreFragment_to_startFragment"
+            app:destination="@id/startFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/startFragment"
+        android:name="com.example.quizzer.ui.Start.StartFragment"
+        android:label="start_fragment"
+        tools:layout="@layout/start_fragment" >
+        <action
+            android:id="@+id/action_startFragment_to_questionsFragment"
+            app:destination="@id/questionsFragment" />
+    </fragment>
 </navigation>
