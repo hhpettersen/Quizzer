@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Quizzer</string>
+    <string name="login_unsuccessful_msg">Login unsuccessful</string>
 </resources>

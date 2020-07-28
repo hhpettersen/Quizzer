@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 
 import com.example.quizzer.R
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.start_fragment.view.*
 
 class StartFragment : Fragment() {
@@ -29,13 +30,12 @@ class StartFragment : Fragment() {
                 R.id.action_startFragment_to_questionsFragment
             )
         }
+        view.welcomeText.text = welcomeMessage()
         return view
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(StartViewModel::class.java)
-        // TODO: Use the ViewModel
+    private fun welcomeMessage(): String {
+        val userName = FirebaseAuth.getInstance().currentUser?.displayName
+        return "Hello, $userName! Good Luck on your quiz!"
     }
-
 }

@@ -1,6 +1,5 @@
 package com.example.quizzer.ui.Questions
 
-import android.opengl.Visibility
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,14 +10,12 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-
 import com.example.quizzer.R
 import com.example.quizzer.data.entities.Question
 import com.example.quizzer.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.questions_fragment.view.*
-import retrofit2.http.Tag
-import timber.log.Timber
+
 
 @AndroidEntryPoint
 class QuestionsFragment : Fragment() {
@@ -74,31 +71,26 @@ class QuestionsFragment : Fragment() {
                     } catch (e: Exception) {
                     //TODO
                 }
-
             } else {
                 view.questionText.text = questions[it].question
                 correctAnswer = questions[it].correct_answer
+
+                if(correctAnswer) {
+                    view.trueButton.setOnClickListener {
+                        viewModel.onCorrectAnswer()
+                    }
+                    view.falseButton.setOnClickListener {
+                        viewModel.onWrongAnswer()
+                    }
+                } else {
+                    view.trueButton.setOnClickListener {
+                        viewModel.onWrongAnswer()
+                    }
+                    view.falseButton.setOnClickListener {
+                        viewModel.onCorrectAnswer()
+                    }
+                }
             }
         })
-
-        println("numQuestions $numQuestions")
-        println("questions ${questions}")
-
-
-        if(correctAnswer) {
-            view.trueButton.setOnClickListener {
-                viewModel.onCorrectAnswer()
-            }
-            view.falseButton.setOnClickListener {
-                viewModel.onWrongAnswer()
-            }
-        } else {
-            view.trueButton.setOnClickListener {
-                viewModel.onWrongAnswer()
-            }
-            view.falseButton.setOnClickListener {
-                viewModel.onCorrectAnswer()
-            }
-        }
     }
 }

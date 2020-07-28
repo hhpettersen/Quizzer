@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/startFragment">
+    app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/questionsFragment"
@@ -34,5 +34,14 @@
         <action
             android:id="@+id/action_startFragment_to_questionsFragment"
             app:destination="@id/questionsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.quizzer.ui.Login.LoginFragment"
+        android:label="login_fragment"
+        tools:layout="@layout/login_fragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_startFragment"
+            app:destination="@id/startFragment" />
     </fragment>
 </navigation>
