@@ -6,9 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 
 import com.example.quizzer.R
+import com.example.quizzer.data.entities.Score
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.score_fragment.view.*
 
 class ScoreFragment : Fragment() {
@@ -34,18 +38,30 @@ class ScoreFragment : Fragment() {
             )
         }
 
+        view.submitScoreButton.setOnClickListener {
+            submitScoreToFirebase(score)
+        }
+
         return view
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(ScoreViewModel::class.java)
+    private fun submitScoreToFirebase(score: Int?) {
+        val ref = FirebaseDatabase.getInstance().getReference("score")
+        val scoreId = ref.push().key
+        val uid = FirebaseAuth.getInstance().currentUser?.uid
+        val scoreNode = Score(score)
 
-
+        if (scoreId != null) {
+            if (uid != null) {
+                ref.child(uid).setValue(scoreNode).addOnCompleteListener {
+                    Toast.makeText(context, "Saved", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
     }
 
     fun setScoreText(view: View) {
-        view.scoreText.text = score.toString()
+        view.scoreSum.text = score.toString()
     }
 
 }

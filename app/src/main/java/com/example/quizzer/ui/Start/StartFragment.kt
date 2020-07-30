@@ -6,19 +6,23 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 
 import com.example.quizzer.R
+import com.example.quizzer.data.entities.Score
+import com.example.quizzer.utils.ValueListenerAdapter
+import com.firebase.ui.auth.data.model.User
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.start_fragment.view.*
 
 class StartFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = StartFragment()
-    }
+    var stringOut2: String? = null
 
-    private lateinit var viewModel: StartViewModel
+    private val viewModel: StartViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,12 +34,35 @@ class StartFragment : Fragment() {
                 R.id.action_startFragment_to_questionsFragment
             )
         }
+        welcomeMessage()
+
         view.welcomeText.text = welcomeMessage()
+        highScoreMessage(view)
+
         return view
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
     }
 
     private fun welcomeMessage(): String {
         val userName = FirebaseAuth.getInstance().currentUser?.displayName
         return "Hello, $userName! Good Luck on your quiz!"
+    }
+
+    private fun highScoreMessage(view: View) {
+        viewModel.fetchData()
+
+        var highScore: Int? = 0
+        var stringOut: String? = "123"
+
+        viewModel.highscore.observe(viewLifecycleOwner, Observer {
+            println(it.score)
+            highScore = it.score
+
+            stringOut = "Your current saved highscore is $highScore"
+            view.highScoreText.text = stringOut
+        })
     }
 }
