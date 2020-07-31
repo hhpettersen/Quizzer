@@ -1,0 +1,10 @@
+Create a user node in db:
+User: uid, email, username, createdAt, numGames, highscore
+
+Two player game:
+1. Find opponent
+2. Fetch questions, save in db-node
+3. Players can ready up after questions fetched
+4. Timer-based, ex 60 sec to complete 10 questions
+5. When player is done, update status and score in db
+6. When both players are done or time is up, complete game

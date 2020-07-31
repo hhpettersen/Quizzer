@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -13,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.quizzer.R
 import com.example.quizzer.data.entities.Score
 import com.example.quizzer.utils.ValueListenerAdapter
+import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.data.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -29,22 +31,28 @@ class StartFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.start_fragment, container, false)
+
         view.startGameButton.setOnClickListener {
             findNavController().navigate(
                 R.id.action_startFragment_to_questionsFragment
             )
         }
-        welcomeMessage()
 
+        view.logoutButton.setOnClickListener {
+            AuthUI.getInstance().signOut(requireContext())
+            findNavController().navigate(
+                R.id.action_startFragment_to_loginFragment
+            )
+        }
+
+        welcomeMessage()
         view.welcomeText.text = welcomeMessage()
         highScoreMessage(view)
 
         return view
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-    }
+
 
     private fun welcomeMessage(): String {
         val userName = FirebaseAuth.getInstance().currentUser?.displayName
@@ -58,11 +66,14 @@ class StartFragment : Fragment() {
         var stringOut: String? = "123"
 
         viewModel.highscore.observe(viewLifecycleOwner, Observer {
-            println(it.score)
             highScore = it.score
 
             stringOut = "Your current saved highscore is $highScore"
-            view.highScoreText.text = stringOut
+            if(stringOut != null) {
+                view.highScoreText.text = stringOut
+            } else {
+                view.highScoreText.visibility = View.GONE
+            }
         })
     }
 }

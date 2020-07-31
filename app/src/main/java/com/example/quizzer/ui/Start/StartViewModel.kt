@@ -28,7 +28,11 @@ class StartViewModel : ViewModel() {
         currentReference().addListenerForSingleValueEvent(
             ValueListenerAdapter {
                 val score = it.getValue(Score::class.java)
-                _highscore.value = score
+                if(score != null) {
+                    _highscore.value = score
+                } else {
+                    _highscore.value = Score(0)
+                }
             }
         )
     }
