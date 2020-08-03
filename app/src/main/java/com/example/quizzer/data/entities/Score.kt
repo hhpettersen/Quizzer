@@ -1,5 +1,7 @@
 package com.example.quizzer.data.entities
 
 data class Score(
-    val score: Int? = 0
+    val numGames: Int? = 0,
+    val record: Int? = 0,
+    val date: String? = ""
 )

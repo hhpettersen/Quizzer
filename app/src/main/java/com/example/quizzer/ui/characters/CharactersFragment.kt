@@ -43,7 +43,6 @@ class CharactersFragment : Fragment()/*, CharactersAdapter.CharacterItemListener
 //
     private fun setupObservers() {
         viewModel.characters.observe(viewLifecycleOwner, Observer {
-            println(it.data)
 //            when (it.status) {
 //                Resource.Status.SUCCESS -> {
 //                    progress_bar.visibility = View.GONE

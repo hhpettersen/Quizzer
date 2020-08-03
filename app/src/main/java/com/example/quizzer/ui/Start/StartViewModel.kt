@@ -4,18 +4,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.quizzer.data.entities.Score
+import com.example.quizzer.data.entities.User
 import com.example.quizzer.utils.ValueListenerAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
 class StartViewModel : ViewModel() {
-    private var mScore: Int? = null
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDatabase: DatabaseReference
 
-    private val _highscore = MutableLiveData<Score>()
-    val highscore: LiveData<Score>
+    private val _highscore = MutableLiveData<Int>()
+    val highscore: LiveData<Int>
         get() = _highscore
 
     fun fetchData() {
@@ -23,15 +23,15 @@ class StartViewModel : ViewModel() {
         mDatabase = FirebaseDatabase.getInstance().reference
 
         fun currentReference(): DatabaseReference =
-            mDatabase.child("score").child(mAuth.currentUser!!.uid)
+            mDatabase.child("users").child(mAuth.currentUser!!.uid)
 
         currentReference().addListenerForSingleValueEvent(
             ValueListenerAdapter {
-                val score = it.getValue(Score::class.java)
-                if(score != null) {
-                    _highscore.value = score
+                val user = it.getValue(User::class.java)
+                if(user != null) {
+                    _highscore.value = user.game?.record
                 } else {
-                    _highscore.value = Score(0)
+                    _highscore.value = 0
                 }
             }
         )

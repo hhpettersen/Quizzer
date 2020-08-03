@@ -8,3 +8,7 @@ Two player game:
 4. Timer-based, ex 60 sec to complete 10 questions
 5. When player is done, update status and score in db
 6. When both players are done or time is up, complete game
+
+Create conditional navigation from login, if new user, be able to add username, date of birth, etc...
+Auto-save record if it exceeds previous record, also add date to db
+Display record + date of record and numGames in startFragment

@@ -1,6 +1,5 @@
 package com.example.quizzer.ui.Score
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -46,14 +45,14 @@ class ScoreFragment : Fragment() {
     }
 
     private fun submitScoreToFirebase(score: Int?) {
-        val ref = FirebaseDatabase.getInstance().getReference("score")
-        val scoreId = ref.push().key
+        val ref = FirebaseDatabase.getInstance().getReference("users")
+        val checkIfExist = ref.push().key
         val uid = FirebaseAuth.getInstance().currentUser?.uid
-        val scoreNode = Score(score)
+        val scoreNode = Score(1, score, "dato")
 
-        if (scoreId != null) {
+        if (checkIfExist != null) {
             if (uid != null) {
-                ref.child(uid).setValue(scoreNode).addOnCompleteListener {
+                ref.child(uid).child("game").setValue(scoreNode).addOnCompleteListener {
                     Toast.makeText(context, "Saved", Toast.LENGTH_LONG).show()
                 }
             }

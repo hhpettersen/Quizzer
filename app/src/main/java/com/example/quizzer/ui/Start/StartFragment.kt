@@ -66,7 +66,7 @@ class StartFragment : Fragment() {
         var stringOut: String? = "123"
 
         viewModel.highscore.observe(viewLifecycleOwner, Observer {
-            highScore = it.score
+            highScore = it
 
             stringOut = "Your current saved highscore is $highScore"
             if(stringOut != null) {
