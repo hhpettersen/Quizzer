@@ -17,7 +17,7 @@ class ScoreFragment : Fragment() {
 
     private lateinit var viewModel: ScoreViewModel
     private var score: Int = 0
-    private var highscore: Int = 0
+    private var highScore: Int = 0
     private var numGames: Int = 0
 
     override fun onCreateView(
@@ -27,7 +27,7 @@ class ScoreFragment : Fragment() {
         val view = inflater.inflate(R.layout.score_fragment, container, false)
 
         score = arguments?.getInt("score")!!
-        highscore = arguments?.getInt("highscore")!!
+        highScore = arguments?.getInt("highScore")!!
         numGames = arguments?.getInt("numGames")!!
 
         setScoreText(view)
@@ -56,7 +56,7 @@ class ScoreFragment : Fragment() {
             }
 
 
-        if(score > highscore) {
+        if(score > highScore) {
             newHighScoreText(view)
             gameReference?.child("record")?.setValue(score)?.addOnCompleteListener {
                 Toast.makeText(context, "New highscore saved", Toast.LENGTH_LONG).show()

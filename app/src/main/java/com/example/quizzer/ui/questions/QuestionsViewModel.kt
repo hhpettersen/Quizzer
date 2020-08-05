@@ -27,7 +27,7 @@ class QuestionsViewModel @ViewModelInject constructor(
         _questionIndex.value = 0
     }
 
-    fun onEndQuiz() {
+    fun endQuiz() {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteQuestions()
         }

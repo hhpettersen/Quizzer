@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.quizzer.R
 import com.example.quizzer.data.entities.Question
 import com.example.quizzer.utils.Resource
+import com.example.quizzer.utils.stringFormatter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.questions_fragment.view.*
 
@@ -22,10 +23,8 @@ class QuestionsFragment : Fragment() {
 
     private val viewModel: QuestionsViewModel by viewModels()
     private var score: Int = 0
-    private var numQuestions: Int = 0
-    private var correctAnswer: Boolean = false
-    private var highscore: Int? = 0
-    private var numGames: Int? = 0
+    private var highScore: Int? = null
+    private var numGames: Int? = null
 
 
     override fun onCreateView(
@@ -33,9 +32,9 @@ class QuestionsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.questions_fragment, container, false)
-        setupObservers(view)
-        highscore = arguments?.getInt("highScore")
+        highScore = arguments?.getInt("highScore")
         numGames = arguments?.getInt("numGames")
+        setupObservers(view)
         return view
     }
 
@@ -57,28 +56,28 @@ class QuestionsFragment : Fragment() {
 
     private fun bindQuestions(view: View, questions: List<Question>) {
 
-        numQuestions = questions.size
-
         viewModel.score.observe(viewLifecycleOwner, Observer {
             score = it
-            view.scoreValue.text = it.toString()
+            view.scoreValue.text = getString(R.string.scoreValueString, it.toString())
         })
 
         viewModel.questionIndex.observe(viewLifecycleOwner, Observer {
-            // Ends quiz after 5 answered questions and deletes questions in db
+            // Ends quiz after 5 answered questions and deletes questions in room
+            // try/catch to fix bug
             if(it >= 5) {
-                viewModel.onEndQuiz()
+                viewModel.endQuiz()
                 try {
                     findNavController().navigate(
                         R.id.action_questionsFragment_to_scoreFragment,
-                        bundleOf("score" to score, "highscore" to highscore, "numGames" to numGames)
+                        bundleOf("score" to score, "highScore" to highScore, "numGames" to numGames)
                     )
                     } catch (e: Exception) {
                     //TODO
                 }
             } else {
-                view.questionText.text = questions[it].question
-                correctAnswer = questions[it].correct_answer
+
+                view.questionText.text = stringFormatter(questions[it].question)
+                val correctAnswer = questions[it].correct_answer
 
                 if(correctAnswer) {
                     view.trueButton.setOnClickListener {

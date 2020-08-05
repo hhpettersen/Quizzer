@@ -3,4 +3,6 @@
     <string name="login_unsuccessful_msg">Login unsuccessful</string>
     <string name="highScoreString">High score: %1$d</string>
     <string name="numGamesString">Games played: %1$d</string>
+    <string name="current_score">Current score: %1$d</string>
+    <string name="scoreValueString">Current score: %1$s</string>
 </resources>
