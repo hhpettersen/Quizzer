@@ -1,4 +1,4 @@
-package com.example.quizzer.ui.Questions
+package com.example.quizzer.ui.questions
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -24,6 +24,9 @@ class QuestionsFragment : Fragment() {
     private var score: Int = 0
     private var numQuestions: Int = 0
     private var correctAnswer: Boolean = false
+    private var highscore: Int? = 0
+    private var numGames: Int? = 0
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,6 +34,8 @@ class QuestionsFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.questions_fragment, container, false)
         setupObservers(view)
+        highscore = arguments?.getInt("highscore")
+        numGames = arguments?.getInt("numGames")
         return view
     }
 
@@ -66,7 +71,7 @@ class QuestionsFragment : Fragment() {
                 try {
                     findNavController().navigate(
                         R.id.action_questionsFragment_to_scoreFragment,
-                        bundleOf("score" to score)
+                        bundleOf("score" to score, "highscore" to highscore, "numGames" to numGames)
                     )
                     } catch (e: Exception) {
                     //TODO

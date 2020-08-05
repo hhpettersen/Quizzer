@@ -4,5 +4,5 @@ data class User(
     val uid: String? = "",
     val email: String? = "",
     val username: String? = "",
-    val game: Score? = Score(0, 0, "")
+    val game: Game? = Game(0, 0, "")
 )

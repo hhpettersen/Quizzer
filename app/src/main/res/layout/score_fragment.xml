@@ -5,27 +5,17 @@
     android:id="@+id/frameLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.Score.ScoreFragment">
-
-    <Button
-        android:id="@+id/submitScoreButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Submit score"
-        app:layout_constraintBottom_toTopOf="@+id/scoreText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    tools:context=".ui.score.ScoreFragment">
 
     <TextView
         android:id="@+id/scoreText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Score:"
-        app:layout_constraintBottom_toTopOf="@+id/scoreSum"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/submitScoreButton" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/scoreSum"

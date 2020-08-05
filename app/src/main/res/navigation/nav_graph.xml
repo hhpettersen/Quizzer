@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/questionsFragment"
-        android:name="com.example.quizzer.ui.Questions.QuestionsFragment"
+        android:name="com.example.quizzer.ui.questions.QuestionsFragment"
         android:label="questions_fragment"
         tools:layout="@layout/questions_fragment" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/scoreFragment"
-        android:name="com.example.quizzer.ui.Score.ScoreFragment"
+        android:name="com.example.quizzer.ui.score.ScoreFragment"
         android:label="score_fragment"
         tools:layout="@layout/score_fragment" >
         <argument
@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/startFragment"
-        android:name="com.example.quizzer.ui.Start.StartFragment"
+        android:name="com.example.quizzer.ui.start.StartFragment"
         android:label="start_fragment"
         tools:layout="@layout/start_fragment" >
         <action
@@ -40,7 +40,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.quizzer.ui.Login.LoginFragment"
+        android:name="com.example.quizzer.ui.login.LoginFragment"
         android:label="login_fragment"
         tools:layout="@layout/login_fragment" >
         <action

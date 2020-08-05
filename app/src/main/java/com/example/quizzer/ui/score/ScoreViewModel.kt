@@ -1,4 +1,4 @@
-package com.example.quizzer.ui.Score
+package com.example.quizzer.ui.score
 
 import androidx.lifecycle.ViewModel
 

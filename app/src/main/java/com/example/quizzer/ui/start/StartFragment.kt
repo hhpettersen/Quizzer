@@ -1,6 +1,5 @@
-package com.example.quizzer.ui.Start
+package com.example.quizzer.ui.start
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,17 +11,15 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 
 import com.example.quizzer.R
-import com.example.quizzer.data.entities.Score
-import com.example.quizzer.utils.ValueListenerAdapter
 import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.auth.data.model.User
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.start_fragment.view.*
 
 class StartFragment : Fragment() {
 
     var stringOut2: String? = null
+    var highScore: Int? = 0
+    var numGames: Int? = 0
 
     private val viewModel: StartViewModel by viewModels()
 
@@ -34,7 +31,8 @@ class StartFragment : Fragment() {
 
         view.startGameButton.setOnClickListener {
             findNavController().navigate(
-                R.id.action_startFragment_to_questionsFragment
+                R.id.action_startFragment_to_questionsFragment,
+                bundleOf("highscore" to highScore, "numGames" to numGames)
             )
         }
 
@@ -62,11 +60,14 @@ class StartFragment : Fragment() {
     private fun highScoreMessage(view: View) {
         viewModel.fetchData()
 
-        var highScore: Int? = 0
+//        var highScore: Int? = 0
         var stringOut: String? = "123"
 
-        viewModel.highscore.observe(viewLifecycleOwner, Observer {
-            highScore = it
+        viewModel.gameInfo.observe(viewLifecycleOwner, Observer {
+            highScore = it.record
+            numGames = it.numGames
+
+            println(it)
 
             stringOut = "Your current saved highscore is $highScore"
             if(stringOut != null) {

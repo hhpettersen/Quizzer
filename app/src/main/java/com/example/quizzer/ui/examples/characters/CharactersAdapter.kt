@@ -1,4 +1,4 @@
-package com.example.quizzer.ui.characters
+package com.example.quizzer.ui.examples.characters
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater

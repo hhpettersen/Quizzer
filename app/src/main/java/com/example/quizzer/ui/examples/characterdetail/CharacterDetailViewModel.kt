@@ -1,13 +1,4 @@
-package com.example.quizzer.ui.characterdetail
-
-import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.switchMap
-import com.example.quizzer.data.entities.Character
-import com.example.quizzer.data.repository.CharacterRepository
-import com.example.quizzer.utils.Resource
+package com.example.quizzer.ui.examples.characterdetail
 
 
 //class CharacterDetailViewModel @ViewModelInject constructor(

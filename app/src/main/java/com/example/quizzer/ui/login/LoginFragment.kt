@@ -1,10 +1,8 @@
-package com.example.quizzer.ui.Login
+package com.example.quizzer.ui.login
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.example.quizzer.R
-import com.example.quizzer.data.entities.Score
+import com.example.quizzer.data.entities.Game
 import com.example.quizzer.data.entities.User
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
@@ -23,6 +21,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.login_fragment.view.*
+import timber.log.Timber
 
 class LoginFragment : Fragment() {
 
@@ -34,8 +33,6 @@ class LoginFragment : Fragment() {
     private val viewModel by viewModels<LoginViewModel>()
 
     private lateinit var navController: NavController
-
-    private var checkIfIsNewUser: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,7 +47,6 @@ class LoginFragment : Fragment() {
         return view
     }
 
-    @SuppressLint("LogNotTimber")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -66,15 +62,13 @@ class LoginFragment : Fragment() {
                     view, requireActivity().getString(R.string.login_unsuccessful_msg),
                     Snackbar.LENGTH_LONG
                 ).show()
-                else -> Log.e(
-                    TAG,
+                else -> Timber.e(
                     "Authentication state that doesn't require any UI change $authenticationState"
                 )
             }
         })
     }
 
-    @SuppressLint("LogNotTimber")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == SIGN_IN_RESULT_CODE) {
@@ -82,16 +76,14 @@ class LoginFragment : Fragment() {
             if (resultCode == Activity.RESULT_OK) {
                 newUserFlow()
                 // Successfully signed in user.
-                Log.i(
-                    TAG,
-                    "Successfully signed in user " +
-                            "${FirebaseAuth.getInstance().currentUser?.displayName}!"
+                Timber.i(
+                    "Successfully signed in user ${FirebaseAuth.getInstance().currentUser?.displayName}!"
                 )
             } else {
                 // Sign in failed. If response is null the user canceled the sign-in flow using
                 // the back button. Otherwise check response.getError().getErrorCode() and handle
                 // the error.
-                Log.i(TAG, "Sign in unsuccessful ${response?.error?.errorCode}")
+                Timber.i("Sign in unsuccessful ${response?.error?.errorCode}")
             }
         }
     }
@@ -111,35 +103,29 @@ class LoginFragment : Fragment() {
     private fun newUserFlow() {
         val rootRef: DatabaseReference = FirebaseDatabase.getInstance().reference
         rootRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-                TODO("Not yet implemented")
-            }
 
             override fun onDataChange(snapshot: DataSnapshot) {
                 val uid = FirebaseAuth.getInstance().currentUser?.uid
-                val doesUserExist = uid?.let { snapshot.child("users").hasChild(it) }
-                if(!doesUserExist!!) {
-                    createDbNode()
+                val userExists = uid?.let { snapshot.child("users").hasChild(it) }
+                if(!userExists!!) {
+                    createUserInDb(uid)
                 }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(context, "Database Error occurred", Toast.LENGTH_LONG).show()
             }
         })
     }
 
-    private fun createDbNode() {
+    private fun createUserInDb(uid: String) {
         val ref = FirebaseDatabase.getInstance().getReference("users")
-        val checkIfNodeExist = ref.push().key
-        val uid = FirebaseAuth.getInstance().currentUser?.uid
         val email = FirebaseAuth.getInstance().currentUser?.email
-        val scoreNode = Score(13,0,"")
 
-        val userNode = User(uid,email,"", scoreNode)
+        val userNode = User(uid, email,"", Game(0,0,""))
 
-        if (checkIfNodeExist != null) {
-            if (uid != null) {
-                ref.child(uid).setValue(userNode).addOnCompleteListener {
-                    Toast.makeText(context, "Saved", Toast.LENGTH_LONG).show()
-                }
-            }
+        ref.child(uid).setValue(userNode).addOnCompleteListener {
+                Toast.makeText(context, "Saved", Toast.LENGTH_LONG).show()
         }
     }
 }

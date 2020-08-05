@@ -1,8 +1,7 @@
-package com.example.quizzer.ui.characters
+package com.example.quizzer.ui.examples.characters
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
-import com.example.quizzer.data.repository.CharacterRepository
 import com.example.quizzer.data.repository.QuestionRepository
 
 class CharactersViewModel @ViewModelInject constructor(

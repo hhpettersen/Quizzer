@@ -1,4 +1,4 @@
-package com.example.quizzer.ui.Questions
+package com.example.quizzer.ui.questions
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
