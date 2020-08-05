@@ -34,7 +34,7 @@ class QuestionsFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.questions_fragment, container, false)
         setupObservers(view)
-        highscore = arguments?.getInt("highscore")
+        highscore = arguments?.getInt("highScore")
         numGames = arguments?.getInt("numGames")
         return view
     }

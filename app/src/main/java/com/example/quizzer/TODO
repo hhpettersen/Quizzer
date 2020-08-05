@@ -11,7 +11,7 @@ Two player game:
 
 Create conditional navigation from login, if new user, be able to add username, date of birth, etc...
 #Auto-save record if it exceeds previous record, also add date to db
-Display record + date of record and numGames in startFragment
+#Display record + date of record and numGames in startFragment
 Fix logout button needing double click
 Backbuttons må sees på
 Refactor code

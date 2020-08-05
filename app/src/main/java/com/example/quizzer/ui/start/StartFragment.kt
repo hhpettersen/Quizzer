@@ -13,11 +13,12 @@ import androidx.navigation.fragment.findNavController
 import com.example.quizzer.R
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.android.synthetic.main.start_fragment.*
 import kotlinx.android.synthetic.main.start_fragment.view.*
+import kotlinx.android.synthetic.main.start_fragment.view.highScoreText
 
 class StartFragment : Fragment() {
 
-    var stringOut2: String? = null
     var highScore: Int? = 0
     var numGames: Int? = 0
 
@@ -32,7 +33,7 @@ class StartFragment : Fragment() {
         view.startGameButton.setOnClickListener {
             findNavController().navigate(
                 R.id.action_startFragment_to_questionsFragment,
-                bundleOf("highscore" to highScore, "numGames" to numGames)
+                bundleOf("highScore" to highScore, "numGames" to numGames)
             )
         }
 
@@ -43,38 +44,27 @@ class StartFragment : Fragment() {
             )
         }
 
-        welcomeMessage()
         view.welcomeText.text = welcomeMessage()
-        highScoreMessage(view)
+
+       gameInfoText(view)
 
         return view
     }
-
-
 
     private fun welcomeMessage(): String {
         val userName = FirebaseAuth.getInstance().currentUser?.displayName
         return "Hello, $userName! Good Luck on your quiz!"
     }
 
-    private fun highScoreMessage(view: View) {
+    private fun gameInfoText(view: View) {
         viewModel.fetchData()
-
-//        var highScore: Int? = 0
-        var stringOut: String? = "123"
 
         viewModel.gameInfo.observe(viewLifecycleOwner, Observer {
             highScore = it.record
             numGames = it.numGames
 
-            println(it)
-
-            stringOut = "Your current saved highscore is $highScore"
-            if(stringOut != null) {
-                view.highScoreText.text = stringOut
-            } else {
-                view.highScoreText.visibility = View.GONE
-            }
+            view.highScoreText.text = getString(R.string.highScoreString, highScore)
+            view.numGamesText.text = getString(R.string.numGamesString, numGames)
         })
     }
 }
