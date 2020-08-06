@@ -1,28 +1,28 @@
 package com.example.quizzer.ui.start
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-
 import com.example.quizzer.R
+import com.example.quizzer.data.datarepo.network.Api
+import com.example.quizzer.data.datarepo.repository.Repository
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.start_fragment.*
 import kotlinx.android.synthetic.main.start_fragment.view.*
-import kotlinx.android.synthetic.main.start_fragment.view.highScoreText
 
 class StartFragment : Fragment() {
 
     var highScore: Int? = 0
     var numGames: Int? = 0
 
-    private val viewModel: StartViewModel by viewModels()
+    private lateinit var factory: StartViewModelFactory
+    private lateinit var viewModel: StartViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,9 +46,32 @@ class StartFragment : Fragment() {
 
         view.welcomeText.text = welcomeMessage()
 
-       gameInfoText(view)
+//       gameInfoText(view)
 
         return view
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+//        setupViewModel()
+        val api = Api()
+        val repository = Repository(api)
+        factory = StartViewModelFactory(repository)
+        viewModel = ViewModelProvider(this, factory).get(StartViewModel::class.java)
+        viewModel.getQuestionsBool()
+        viewModel.q.observe(viewLifecycleOwner, Observer {
+            println(it.results)
+        })
+    }
+
+    private fun setupViewModel() {
+        val api  = Api()
+        val repository = Repository(api)
+        factory = StartViewModelFactory(repository)
+        viewModel = ViewModelProvider(this, factory).get(StartViewModel::class.java)
+        viewModel.q.observe(viewLifecycleOwner, Observer { it ->
+            println(it.results)
+        })
     }
 
     private fun welcomeMessage(): String {
