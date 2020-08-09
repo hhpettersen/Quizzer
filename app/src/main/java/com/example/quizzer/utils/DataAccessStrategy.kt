@@ -3,7 +3,8 @@ package com.example.quizzer.utils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.map
-import com.example.quizzer.utils.Resource.Status.*
+import com.example.quizzer.utils.Resource.Status.ERROR
+import com.example.quizzer.utils.Resource.Status.SUCCESS
 import kotlinx.coroutines.Dispatchers
 
 fun <T, A> performGetOperation(databaseQuery: () -> LiveData<T>,
