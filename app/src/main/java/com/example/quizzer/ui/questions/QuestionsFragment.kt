@@ -67,14 +67,16 @@ class QuestionsFragment : Fragment() {
 //        })
 //    }
         private fun setupObservers(view: View) {
-        viewModel.q.observe(viewLifecycleOwner, Observer {
-            if(it.results.isNullOrEmpty())
-                bindQuestions(view, it.results)
+            viewModel.q.observe(viewLifecycleOwner, Observer {
+                if(!it.results.isNullOrEmpty()) {
+                    bindQuestions(view, it.results)
+                }
         })
     }
 
     private fun bindQuestions(view: View, questions: List<QuestionBool>) {
         viewModel.score.observe(viewLifecycleOwner, Observer {
+            println(it)
             score = it
             view.scoreValue.text = getString(R.string.scoreValueString, it.toString())
         })
